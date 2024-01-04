@@ -5,8 +5,8 @@ public class MainBallController : MonoBehaviour
 {
     [SerializeField] private LineRenderer pullLine;
     [SerializeField] private Rigidbody mainBallRigid;
-    [SerializeField] private float hitPower = 2000.0f;
-    [SerializeField] private float maxPower = 3000.0f;
+    [SerializeField] private float hitPower = 5.0f;
+    [SerializeField] private float maxPower = 10.0f;
 
     private Vector3 clickPosition = Vector3.zero;
     private Camera mainCamera;
@@ -46,6 +46,9 @@ public class MainBallController : MonoBehaviour
     /// </summary>
     private void OnMouseDrag()
     {
+        // 動いてる間は打てない
+        if (!mainBallRigid.IsSleeping()) return;
+
         // 引っ張り線の長さと位置を修正
         pullLine.SetPosition(1, mainBallRigid.position + GetPullVector());
     }
@@ -55,13 +58,14 @@ public class MainBallController : MonoBehaviour
     /// </summary>
     private void OnMouseUp()
     {
+        // 動いてる間は打てない
+        if (!mainBallRigid.IsSleeping()) return;
+
         // 引っ張り線を非表示
         pullLine.enabled = false;
 
         // ボールを射出
         var force = Vector3.ClampMagnitude((GetPullVector() * hitPower) * -1, maxPower);
-        Debug.Log(GetPullVector());
-        Debug.Log(force);
         mainBallRigid.AddForce(force, ForceMode.Impulse);
     }
 }
