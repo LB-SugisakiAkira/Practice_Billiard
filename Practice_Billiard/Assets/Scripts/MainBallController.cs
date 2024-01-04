@@ -1,73 +1,67 @@
+using System;
 using UnityEngine;
 
 public class MainBallController : MonoBehaviour
 {
-    [SerializeField] private GameObject mainBall;
-    [SerializeField] private GameObject pullLine;
-    [SerializeField] private float hitPower = 0.8f;
-    [SerializeField] private RectTransform imageRect;
+    [SerializeField] private LineRenderer pullLine;
+    [SerializeField] private Rigidbody mainBallRigid;
+    [SerializeField] private float hitPower = 2000.0f;
+    [SerializeField] private float maxPower = 3000.0f;
 
-    private Rigidbody mainBallRigid;
-    private Transform mainBallTransform;
+    private Vector3 clickPosition = Vector3.zero;
+    private Camera mainCamera;
 
-    private Vector3 clickPosition = new Vector3();
-    private void Start()
+    private void Awake()
     {
-        mainBallRigid = mainBall.GetComponent<Rigidbody>();
-        mainBallTransform = mainBall.GetComponent<Transform>();
-
-        pullLine.SetActive(false);
+        mainCamera = Camera.main;
     }
 
-    private void Update()
+    /// <summary>
+    /// 引っ張り線のベクトルを取得
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 GetPullVector()
     {
-        if (mainBall.activeSelf)
-        {
-            // マウスクリック開始
-            if (Input.GetMouseButtonDown(0))
-            {
-                // 開始位置を保管
-                clickPosition = Input.mousePosition;
-
-                // 方向線を表示
-                pullLine.SetActive(true);
-                ResizePullLine(mainBallTransform.position);
-            }
-            // マウスクリック中
-            else if (Input.GetMouseButton(0))
-            {
-                // 引っ張り線を書き直す
-                ResizePullLine(clickPosition);
-            }
-            // クリックを離した
-            else if (Input.GetMouseButtonUp(0))
-            {
-                // 開始位置と終了位置から方向を算出
-                var defPosition = clickPosition - Input.mousePosition;
-                var addVector = new Vector3(defPosition.x, 0, defPosition.y);
-
-                // ボールを打ち出す
-                mainBallRigid.AddForce(addVector * hitPower);
-
-                // 線を非表示
-                pullLine.SetActive(false);
-            }
-        }
+        var viewPointVector = mainCamera.ScreenToViewportPoint(Input.mousePosition - clickPosition);
+        viewPointVector *= 3.0f;     // マウスカーソルと実際の線がちょっとずれるので補正
+        return new Vector3(viewPointVector.x, 0, viewPointVector.y);
     }
 
-    private void ResizePullLine(Vector3 basePosition)
+    /// <summary>
+    /// ドラッグ開始
+    /// </summary>
+    private void OnMouseDown()
     {
-        // 角度を算出
-        var defPosition = basePosition - Input.mousePosition;
-        var angle = Mathf.Atan2(defPosition.x, defPosition.y) * Mathf.Rad2Deg;
-        var quaternion = Quaternion.Euler(new Vector3(0, angle, 0));
+        // ドラッグ開始位置を記録
+        clickPosition = Input.mousePosition;
 
-        // 距離を算出
-        var distance = Vector3.Distance(clickPosition, mainBallTransform.position) / 50;
+        // 引っ張り線を有効化
+        pullLine.enabled = true;
+        pullLine.SetPosition(0, mainBallRigid.position);
+        pullLine.SetPosition(1, mainBallRigid.position);
+    }
 
-        // 引っ張り線を書き直す
-        pullLine.transform.localRotation = quaternion;
-        pullLine.transform.position = mainBallTransform.position;
-        // imageRect.sizeDelta = new Vector2(distance, imageRect.sizeDelta.y);
+    /// <summary>
+    /// ドラッグ中
+    /// </summary>
+    private void OnMouseDrag()
+    {
+        // 引っ張り線の長さと位置を修正
+        pullLine.SetPosition(1, mainBallRigid.position + GetPullVector());
+    }
+
+    /// <summary>
+    /// ドラッグ終了
+    /// </summary>
+    private void OnMouseUp()
+    {
+        // 引っ張り線を非表示
+        pullLine.enabled = false;
+
+        // ボールを射出
+        var force = Vector3.ClampMagnitude((GetPullVector() * hitPower) * -1, maxPower);
+        Debug.Log(GetPullVector());
+        Debug.Log(force);
+        mainBallRigid.AddForce(force, ForceMode.Impulse);
     }
 }
