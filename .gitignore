@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 # Jetbrains
 .idea/
+.githhub/Practice_Billiard/Library/
+.githhub/Practice_Billiard/Logs/
+.githhub/Practice_Billiard/UserSettings/
