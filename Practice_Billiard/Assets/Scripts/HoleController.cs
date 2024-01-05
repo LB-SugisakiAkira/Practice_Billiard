@@ -10,8 +10,8 @@ public class HoleController : MonoBehaviour
         }
         else if (other.CompareTag("MainBall"))
         {
-            // プレイヤー交代
-            // 手球を好きなとこに置ける
+            gameObject.SetActive(false);
+            GameManager.instance.FreeBall();
         }
     }
 }

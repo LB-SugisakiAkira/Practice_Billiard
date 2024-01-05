@@ -1,4 +1,4 @@
-using System;
+using System.Text.RegularExpressions;
 using UniRx;
 using UnityEngine;
 
@@ -86,6 +86,12 @@ public class MainBallController : MonoBehaviour
         if (other.gameObject.CompareTag("TargetBall"))
         {
             // 当てるべきやつじゃなかったらアウト
+            var ballNumber = int.Parse(Regex.Replace(other.gameObject.name, @"[^0-9]", "") );
+            if (ballNumber != GameManager.instance.nextBallNumber)
+            {
+                gameObject.SetActive(false);
+                GameManager.instance.FreeBall();
+            }
         }
     }
 }
