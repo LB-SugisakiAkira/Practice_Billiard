@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class HoleController : MonoBehaviour
@@ -7,12 +6,12 @@ public class HoleController : MonoBehaviour
     {
         if (other.CompareTag("TargetBall"))
         {
-            other.gameObject.SetActive(false);
+            GameManager.instance.GetBall(other.gameObject);
         }
         else if (other.CompareTag("MainBall"))
         {
-            // ゲームオーバー
-            Debug.Log("ゲームオーバー");
+            // プレイヤー交代
+            // 手球を好きなとこに置ける
         }
     }
 }

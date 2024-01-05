@@ -1,4 +1,5 @@
 using System;
+using UniRx;
 using UnityEngine;
 
 public class MainBallController : MonoBehaviour
@@ -14,6 +15,15 @@ public class MainBallController : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+    }
+
+    private void Update()
+    {
+        // 動いてる状態から止まった
+        if (GameManager.instance.isMainBallMoving && mainBallRigid.IsSleeping())
+        {
+            GameManager.instance.ballStopSubject.OnNext(Unit.Default);
+        }
     }
 
     /// <summary>
@@ -67,5 +77,15 @@ public class MainBallController : MonoBehaviour
         // ボールを射出
         var force = Vector3.ClampMagnitude((GetPullVector() * hitPower) * -1, maxPower);
         mainBallRigid.AddForce(force, ForceMode.Impulse);
+
+        GameManager.instance.ballStartSubject.OnNext(Unit.Default);
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("TargetBall"))
+        {
+            // 当てるべきやつじゃなかったらアウト
+        }
     }
 }
