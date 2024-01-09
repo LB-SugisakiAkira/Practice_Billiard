@@ -1,72 +1,78 @@
-Shader "Unlit/OutlineShader"
+Shader "Custom/OutlineShader"
 {
     Properties
     {
-        [NoScaleOffset] _MainTex("Base (RGB)", 2D) = "white" { }
-        _ObjectColor ("Object Color", Color) = (1,1,1,1)
+        _Color ("Color", Color) = (1,1,1,1)
+        _MainTex ("Albedo (RGB)", 2D) = "white" {}
+        _Glossiness ("Smoothness", Range(0,1)) = 0.5
+        _Metallic ("Metallic", Range(0,1)) = 0.0
         _OutlineColor ("Outline Color", Color) = (1,0,0,1)
-        _OutlineWidth("Outline Width", Range(0, 0.1)) = .005
     }
-    	
-    CGINCLUDE
-	#include "UnityCG.cginc"
-
-	struct appdata
-	{
-		float4 vertex : POSITION;
-		float2 uv       : TEXCOORD0;
-		float3 normal : NORMAL;
-	};
-
-	struct v2f 
-	{
-		float4 pos : SV_POSITION;
-		float2 uv       : TEXCOORD0;
-	};
-
-	sampler2D _MainTex;
-	float4 _MainTex_ST;
-	uniform float4 _ObjectColor;
-	uniform float _OutlineWidth;
-	uniform float4 _OutlineColor;
-
-	ENDCG
-
+    
     SubShader
     {
-//        Tags { "RenderType"="Opaque" }
-        LOD 100
+        Tags { "RenderType"= "Opaque" }
+        LOD 200
+
+        CGPROGRAM
+        // Physically based Standard lighting model, and enable shadows on all light types
+        #pragma surface surf Standard fullforwardshadows
         
-        Pass
+        // Use shader model 3.0 target, to get nicer looking lighting
+        #pragma target 3.0
+        
+        sampler2D _MainTex;
+        
+        struct Input
         {
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-
-            #include "UnityCG.cginc"
-			v2f vert(appdata v)
-			{
-				v2f o;
-				o.pos = UnityObjectToClipPos(v.vertex); //頂点をMVP行列変換
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex); //テクスチャスケールとオフセットを加味
-				return o;
-			}
-
-			fixed4 frag(v2f i) : SV_Target
-			{
-				half4 c = tex2D(_MainTex, i.uv); //UVをもとにテクスチャカラーをサンプリング
-				c.rgb *= _ObjectColor; //ベースカラーを乗算
-				return c;
-			}
-            ENDCG
+            float2 uv_MainTex;
+        };
+        
+        half _Glossiness;
+        half _Metallic;
+        fixed4 _Color;
+        
+        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
+        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
+        // #pragma instancing_options assumeuniformscaling
+        UNITY_INSTANCING_BUFFER_START(Props)
+            // put more per-instance properties here
+        UNITY_INSTANCING_BUFFER_END(Props)
+        
+        void surf (Input IN, inout SurfaceOutputStandard o)
+        {
+            // Albedo comes from a texture tinted by color
+            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+            o.Albedo = c.rgb;
+            // Metallic and smoothness come from slider variables
+            o.Metallic = _Metallic;
+            o.Smoothness = _Glossiness;
+            o.Alpha = c.a;
         }
+        ENDCG
+
         Pass
         {
-//			Name "OUTLINE" //アウトライン部分を描画するパスの名前
-
 			Cull Front //表面をカリング（描画しない）
 
 			CGPROGRAM
+
+			struct appdata
+	        {
+	        	float4 vertex : POSITION;
+	        	float2 uv     : TEXCOORD0;
+	        	float3 normal : NORMAL;
+	        };
+            
+	        struct v2f 
+	        {
+	        	float4 pos : SV_POSITION;
+	        	float2 uv  : TEXCOORD0;
+	        };
+
+			uniform float _OutlineWidth;
+	        uniform float4 _OutlineColor;
+
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -96,4 +102,5 @@ Shader "Unlit/OutlineShader"
             ENDCG
         }
     }
+    FallBack "Diffuse"
 }
