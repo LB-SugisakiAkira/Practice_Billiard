@@ -10,7 +10,7 @@ public class HoleController : MonoBehaviour
         }
         else if (other.CompareTag("MainBall"))
         {
-            gameObject.SetActive(false);
+            other.gameObject.SetActive(false);
             GameManager.instance.FreeBall();
         }
     }

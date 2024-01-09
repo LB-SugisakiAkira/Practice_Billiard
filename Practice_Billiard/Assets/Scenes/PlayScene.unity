@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 92353661}
   - component: {fileID: 92353664}
   - component: {fileID: 92353663}
-  - component: {fileID: 92353665}
+  - component: {fileID: 92353662}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -530,8 +530,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 705c0bbcbbb49614a83c2a2f4bf4942f, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -756,8 +764,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: cfc2fbe7c178ffb4a94cfa2c0b65482a, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -1157,8 +1173,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: d31c6e392cea172468d90e0c644c1a5f, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -1239,8 +1263,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: af6d13d8753870d478868e5a4d7af2b8, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -1571,8 +1603,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: c96cce97f725d5040a85d2b065147147, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -1952,7 +1992,8 @@ MonoBehaviour:
   playerTest: {fileID: 936501752}
   turnText: {fileID: 347740341}
   remainText: {fileID: 946246992}
-  nextBallText: {fileID: 0}
+  outlineWidth: 0.005
+  isFirstTouch: 0
 --- !u!4 &1346046364
 Transform:
   m_ObjectHideFlags: 0
@@ -1981,8 +2022,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: da8a4e94ceadc48439b55cfbe0facccf, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -2168,8 +2217,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 095efbebf31c41345b8aab931ab261a9, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -2507,8 +2564,8 @@ Rigidbody:
   m_GameObject: {fileID: 1690191784}
   serializedVersion: 4
   m_Mass: 0.5
-  m_Drag: 0.1
-  m_AngularDrag: 0.1
+  m_Drag: 1
+  m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2900,8 +2957,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 8155fb5feb8eb32409dc1c69483ff0b1, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints
@@ -3482,8 +3547,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 16df7eaf8f5917142a5275c3635db6b7, type: 2}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Mass
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
+      propertyPath: m_AngularDrag
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2844164025578988012, guid: b3d5fa9d484b8db4eb784b41223db544, type: 3}
       propertyPath: m_Constraints

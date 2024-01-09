@@ -86,8 +86,12 @@ public class MainBallController : MonoBehaviour
         if (other.gameObject.CompareTag("TargetBall"))
         {
             // 当てるべきやつじゃなかったらアウト
-            var ballNumber = int.Parse(Regex.Replace(other.gameObject.name, @"[^0-9]", "") );
-            if (ballNumber != GameManager.instance.nextBallNumber)
+            var ballName = other.gameObject.name;
+            if (ballName == GameManager.instance.nextBall)
+            {
+                GameManager.instance.isFirstTouch = false;
+            }
+            else if (GameManager.instance.isFirstTouch)
             {
                 gameObject.SetActive(false);
                 GameManager.instance.FreeBall();

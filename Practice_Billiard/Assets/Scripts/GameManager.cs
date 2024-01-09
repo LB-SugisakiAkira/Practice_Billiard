@@ -12,15 +12,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text playerTest;
     [SerializeField] private Text turnText;
     [SerializeField] private Text remainText;
-    [SerializeField] private Text nextBallText;
+    [SerializeField] private float outlineWidth = 0.005f;       // アウトラインの線幅
 
-    private List<string> targetBallList = new List<string>();    // 盤上にあるボール一覧
-    private List<string> getBallList = new List<string>();       // 今落としたボール一覧
-    private List<string> playerList = new List<string>();        // プレイヤー一覧
+    private List<GameObject> targetBallList = new List<GameObject>();   // 盤上にあるボール一覧
+    private List<GameObject> getBallList = new List<GameObject>();      // 今落としたボール一覧
+    private List<string> playerList = new List<string>();               // プレイヤー一覧
 
-    public int nextBallNumber { get; private set; } = 1;         // 次落とすべきボールの番号
-    private int turnCount = 1;                                   // 突くのが何回目か
-    private int currentPlayerIndex = 0;                          // 今ターンのプレイヤー
+    public string nextBall { get; private set; }                // 次落とすべきボールの番号
+    private int turnCount = 1;                                  // 突くのが何回目か
+    private int currentPlayerIndex = 0;                         // 今ターンのプレイヤー
+    [HideInInspector] public bool isFirstTouch = false;         // このターンで初めて的球と接触したか
 
     public bool isMainBallMoving { get; private set; } = false;
     public Subject<Unit> ballStartSubject = new Subject<Unit>();
@@ -65,31 +66,33 @@ public class GameManager : MonoBehaviour
         targetBallList.Clear();
         foreach (var ballObject in balls)
         {
-            targetBallList.Add(ballObject.name);
+            targetBallList.Add(ballObject);
         }
-        targetBallList.Sort();
+        targetBallList.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
 
         // ターン情報初期化
         turnCount = 1;
         currentPlayerIndex = 0;
-        nextBallNumber = 1;
+        nextBall = string.Empty;
     }
 
     // ホールにボールが落ちた時の処理
     public void GetBall(GameObject ballObject)
     {
+        ballObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
         ballObject.layer = 3;   // 下に落とすために当たり判定をなくす
-        ballObject.GetComponent<Collider>();
-
-        getBallList.Add(ballObject.name);
+        getBallList.Add(ballObject);
     }
 
     // ターン終了時処理
     private void OnEndTurn()
     {
+        // ターン情報更新
         isMainBallMoving = false;
+        isFirstTouch = true;
         turnCount++;
 
+        // 落としたボールの処理
         foreach (var ball in getBallList)
         {
             // 落としたボールを表示
@@ -123,14 +126,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void RedisplayInformation()
     {
+        // プレイヤー、ターン数
         playerTest.text = $"Player : {playerList[currentPlayerIndex]}";
         turnText.text = $"Turn : {turnCount}";
 
-        // 残りの玉
-        var remainBall = targetBallList.Aggregate("Remain : ", (current, ball) => current + ConvertCircleNumber(ball));
+        // 残りの玉一覧
+        var remainBall = targetBallList.Aggregate("Remain : ", (current, ball) => current + ConvertCircleNumber(ball.name));
         remainText.text = remainBall;
 
-        // nextBallText.text = $"Player : {playerList[currentPlayerIndex]}";
+        // 次落とすべきボールにアウトラインを付ける
+        var nextBallObject = targetBallList.First();
+        if (nextBallObject.name != nextBall)
+        {
+            nextBall = nextBallObject.name;
+            nextBallObject.GetComponent<Renderer>()?.material.SetFloat("_OutlineWidth", outlineWidth);
+        }
     }
 
     /// <summary>
@@ -138,7 +148,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="ballName"></param>
     /// <returns></returns>
-    private string ConvertCircleNumber(string ballName)
+    private static string ConvertCircleNumber(string ballName)
     {
         var number = ballName switch
         {
